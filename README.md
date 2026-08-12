@@ -23,12 +23,12 @@ The lab recreates a miniature industrial environment:
 
 ## What This Project Demonstrates
 
-- **Industrial protocol knowledge** — Modbus TCP (function codes, coils, registers) on port 502.
-- **The core OT security flaw** — Modbus has no authentication or encryption, so any host that can reach the PLC can both read and *change* physical process state.
-- **Attack execution** — a false-command-injection ("manipulation of control") attack that forces a control output with no authorization.
-- **Detection & analysis** — distinguishing normal read traffic (function codes 1, 3) from anomalous write commands (function code 5); extracting indicators of compromise (IOCs).
-- **Incident response** — containment via firewall rules, followed by a full **PICERL** write-up (see `incident-report.pdf`).
-- **Defensive controls** — segmentation, allow-listing, and continuous monitoring for legacy OT protocols.
+- **Industrial protocol knowledge**: Modbus TCP (function codes, coils, registers) on port 502.
+- **The core OT security flaw**: Modbus has no authentication or encryption, so any host that can reach the PLC can both read and *change* physical process state.
+- **Attack execution**: a false-command-injection ("manipulation of control") attack that forces a control output with no authorization.
+- **Detection & analysis**: distinguishing normal read traffic (function codes 1, 3) from anomalous write commands (function code 5); extracting indicators of compromise (IOCs).
+- **Incident response**: containment via firewall rules, followed by a full **PICERL** write-up (see `incident-report.pdf`).
+- **Defensive controls**: segmentation, allow-listing, and continuous monitoring for legacy OT protocols.
 
 ---
 
@@ -49,17 +49,17 @@ The lab recreates a miniature industrial environment:
 
 ## The Attack, Step by Step
 
-1. **Baseline** — the HMI dashboard polls the PLC every second using read commands (Modbus function codes 1 and 3). This is the normal traffic pattern.
-2. **Attack** — `attack.py` sends a **Write Single Coil** command (function code 5) that forces the pump ON, with no authentication.
-3. **Detection** — Wireshark captures the anomalous write among the normal reads. The IOC is extracted: function code 5, target coil 0 (pump), value `FF 00` (ON), with a timestamp.
-4. **Containment** — a firewall rule blocks the attacker from reaching the PLC on port 502; the attack is re-run and fails.
-5. **Response & lessons** — documented end-to-end in `incident-report.pdf` using PICERL, concluding with segmentation, allow-listing, and monitoring as preventive controls.
+1. **Baseline**: the HMI dashboard polls the PLC every second using read commands (Modbus function codes 1 and 3). This is the normal traffic pattern.
+2. **Attack**: `attack.py` sends a **Write Single Coil** command (function code 5) that forces the pump ON, with no authentication.
+3. **Detection**: Wireshark captures the anomalous write among the normal reads. The IOC is extracted: function code 5, target coil 0 (pump), value `FF 00` (ON), with a timestamp.
+4. **Containment**: a firewall rule blocks the attacker from reaching the PLC on port 502; the attack is re-run and fails.
+5. **Response & lessons**: documented end-to-end in `incident-report.pdf` using PICERL, concluding with segmentation, allow-listing, and monitoring as preventive controls.
 
 ---
 
 ## Key Takeaway
 
-Legacy OT protocols such as Modbus cannot secure themselves — they have no built-in authentication or encryption. Security must therefore be enforced by the surrounding architecture: **network segmentation, allow-listing, and continuous monitoring.** This lab demonstrates that principle from attack through to defense.
+Legacy OT protocols such as Modbus cannot secure themselves, they have no built-in authentication or encryption. Security must therefore be enforced by the surrounding architecture: **network segmentation, allow-listing, and continuous monitoring.** This lab demonstrates that principle from attack through to defense.
 
 ---
 
